@@ -1,0 +1,16 @@
+#OS Files
+.DS_Store
+Thumbs.db
+
+#IDE
+.vscode/
+
+#Logs
+*.log
+
+#Environment Files
+.env
+.env.*
+
+#Kubernetes local files
+*.tmp
