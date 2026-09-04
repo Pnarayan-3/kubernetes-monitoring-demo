@@ -1,7 +1,7 @@
 ---
 name: Kube Monitor CI
 
-"on": 
+"on":
   push:
     branches:
       - main
@@ -58,8 +58,3 @@ jobs:
       - name: Summary
         run: |
           echo "Validation Completed"
-
-
-        
-      
- 
