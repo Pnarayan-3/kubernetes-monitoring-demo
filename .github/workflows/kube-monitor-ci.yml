@@ -26,16 +26,6 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      # setup kubectl
-      - name: Set up kubectl
-        uses: azure/setup-kubectl@v4
-        with:
-          version: 'latest'
-
-      - name: Check kubectl version
-        run: |
-          kubectl version --client
-
       # YAML Validation
       - name: Install YAML Validator
         run: |
@@ -45,14 +35,22 @@ jobs:
       - name: Validate YAML files
         run: |
           yamllint .
-
-      # Kubernetes Dry Run
-      - name: Kubernetes Dry Run
+      
+      # Install kubeconform
+      - name: Install kubeconform
         run: |
-          kubectl apply \
-            --dry-run=client \
-            -f deployment.yaml \
-            -f service.yaml
+          curl -L \
+            https://github.com/yannh/kubeconform/releases/latest/download/kubeconform-linux-amd64.tar.gz \
+            -o kubeconform.tar.gz
+          tar -xzf kubeconform.tar.gz
+          sudo mv kubeconform /usr/local/bin/
+
+      # Validate Kubernetes schema
+      - name: Validate Kubernetes schema
+        run: |
+          kubeconform \
+            deployment.yaml \
+            service.yaml
 
       # Summary
       - name: Summary
