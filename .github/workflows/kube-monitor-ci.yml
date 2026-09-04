@@ -35,13 +35,17 @@ jobs:
       - name: Validate YAML files
         run: |
           yamllint .
-      
+
       # Install kubeconform
       - name: Install kubeconform
         run: |
+          KUBECONFORM_URL="https://github.com/yannh/kubeconform/releases/latest/download/"
+          KUBECONFORM_FILE="kubeconform-linux-amd64.tar.gz"
+
           curl -L \
-            https://github.com/yannh/kubeconform/releases/latest/download/kubeconform-linux-amd64.tar.gz \
+            "${KUBECONFORM_URL}${KUBECONFORM_FILE}" \
             -o kubeconform.tar.gz
+
           tar -xzf kubeconform.tar.gz
           sudo mv kubeconform /usr/local/bin/
 
