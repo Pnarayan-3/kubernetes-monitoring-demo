@@ -1,7 +1,7 @@
 ---
 name: Kube Monitor CI
 
-on: 
+"on": 
   push:
     branches:
       - main
@@ -57,7 +57,8 @@ jobs:
       # Summary
       - name: Summary
         run: |
-          echo "Kubernetes Deployment and Service files have been validated successfully."
+          echo "Validation Completed"
+
 
         
       
