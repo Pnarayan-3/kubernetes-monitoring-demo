@@ -1,0 +1,64 @@
+---
+name: Kube Monitor CI
+
+on: 
+  push:
+    branches:
+      - main
+      - master
+      - 'feature/**'
+
+  pull_request:
+    branches:
+      - main
+      - master
+
+  issues:
+    types: [opened, edited, reopened]
+
+jobs:
+  validate:
+    name: Validate Kubernetes Deployment
+    runs-on: ubuntu-latest
+
+    steps:
+      # checkout the repository
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # setup kubectl
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v4
+        with:
+          version: 'latest'
+
+      - name: Check kubectl version
+        run: |
+          kubectl version --client
+
+      # YAML Validation
+      - name: Install YAML Validator
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y yamllint
+
+      - name: Validate YAML files
+        run: |
+          yamllint .
+
+      # Kubernetes Dry Run
+      - name: Kubernetes Dry Run
+        run: |
+          kubectl apply \
+            --dry-run=client \
+            -f deployment.yaml \
+            -f service.yaml
+
+      # Summary
+      - name: Summary
+        run: |
+          echo "Kubernetes Deployment and Service files have been validated successfully."
+
+        
+      
+ 
